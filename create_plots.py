@@ -20,15 +20,23 @@ def create_heap(arity, collection_to_use:list):
     return my_heap
 
 
-def delete_from_a_heap(heap:Heap, collection_to_use:list):
-    for _ in collection_to_use:
+def measure_removal_time(heap:Heap) -> list:
+    del_times = []
+    gc_old = gc.isenabled()
+    gc.disable()
+    for _ in range(0, 100001, 10000):
+        start = time.process_time()
         heap.pop()
+        stop = time.process_time()
+        del_times.append(stop - start)
+    if gc_old:
+        gc.enable()
+    return del_times
 
-def measure_time(arity, collection:list) -> tuple:
+def measure_creation_time(arity, collection:list) -> int:
     if len(collection) == 0:
-        return 0, 0
+        return 0
     creation_time = 0
-    removal_time = 0
     gc_old = gc.isenabled()
     gc.disable()
     # measuring creation time
@@ -37,15 +45,9 @@ def measure_time(arity, collection:list) -> tuple:
     stop = time.process_time()
     # save time
     creation_time += stop - start
-    # measuring removal time
-    start = time.process_time()
-    delete_from_a_heap(heap_created, collection)
-    stop = time.process_time()
-    # save time
-    removal_time += stop - start
     if gc_old:
         gc.enable()
-    return creation_time, removal_time
+    return creation_time
 
 
 
@@ -59,19 +61,23 @@ def create_heap_figures(entry_list:list):
     time_to_remove_7_arity = []
     arity_list = [2, 5, 7]
     for c_arity in arity_list:
-        for n in range(0, 10001, 1000):
+        for n in range(0, 100001, 10000):
             n_tested.append(n)
             tested = entry_list[:n]
-            heap_times = measure_time(c_arity, tested)
+            heap_times = measure_creation_time(c_arity, tested)
             if c_arity == 2:
-                time_to_create_2_arity.append(heap_times[0])
-                time_to_remove_2_arity.append(heap_times[1])
+                time_to_create_2_arity.append(heap_times)
             if c_arity == 5:
-                time_to_create_5_arity.append(heap_times[0])
-                time_to_remove_5_arity.append(heap_times[1])
+                time_to_create_5_arity.append(heap_times)
             if c_arity == 7:
-                time_to_create_7_arity.append(heap_times[0])
-                time_to_remove_7_arity.append(heap_times[1])
+                time_to_create_7_arity.append(heap_times)
+
+    my_heap = create_heap(2, entry_list)
+    time_to_remove_2_arity = measure_removal_time(my_heap)
+    my_heap = create_heap(5, entry_list)
+    time_to_remove_5_arity = measure_removal_time(my_heap)
+    my_heap = create_heap(7, entry_list)
+    time_to_remove_7_arity = measure_removal_time(my_heap)
 
     # creation plots
     plt.plot(n_tested[:11], time_to_create_2_arity, color = 'g', label = "2 arity")
@@ -83,7 +89,7 @@ def create_heap_figures(entry_list:list):
     plt.savefig("Heaps creation times")
     plt.clf()
 
-    # removing from plots
+    # removing from big plots
     plt.plot(n_tested[:11], time_to_remove_2_arity, color = 'g', label = "2 arity")
     plt.plot(n_tested[11:22], time_to_remove_5_arity, color = 'r', label = "5 arity")
     plt.plot(n_tested[22:], time_to_remove_7_arity, color = 'b', label = "7 arity")
@@ -95,5 +101,5 @@ def create_heap_figures(entry_list:list):
 
 
 if __name__ == "__main__":
-    random_numbers = random.sample(range(1, 30000), 10000)
+    random_numbers = random.sample(range(1, 300000), 100000)
     create_heap_figures(random_numbers)
