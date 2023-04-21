@@ -20,7 +20,7 @@ class Heap:
         for child_number in range(self.arity):
             child_index = self.arity * parent_index + child_number
             if child_index < len(self._internal_tab):
-                children_indices.append()
+                children_indices.append(child_index)
         return children_indices
 
     def pop(self):
@@ -40,26 +40,26 @@ class Heap:
         internal = self._internal_tab
         internal[index_1], internal[index_2] = internal[index_2], internal[index_1]
 
-    def add(self, value):
+    def add(self, key, value):
         # # nie dodawanie duplikatu
-        # if value in self._internal_tab:
+        # if key in self._internal_tab:
         #     return
         internal = self._internal_tab
-        self._internal_tab.append(value)
+        self._internal_tab.append((key, value))
         current_index = len(self._internal_tab) - 1
         parent_index = self.get_parent(current_index)
-        while (internal[current_index] > internal[parent_index]) and current_index != 0:
+        while (internal[current_index][0] > internal[parent_index][0]) and current_index != 0:
             self.swap_at_indices(parent_index, current_index)
             current_index = parent_index
             parent_index = self.get_parent(current_index)
 
-    def heapify(self):
+    def heapify(self) -> None:
         # swap with larger child, until the child index exceeds the size of the array
         if self._internal_tab:
             current_index = 0
             children_indices = self.get_children_indices(current_index)
             while children_indices:
-                largest = self._internal_tab[children_indices[0]]
+                largest = self._internal_tab[children_indices[0]][0] # the key of the first child
                 largest_index = children_indices[0]
                 # find the largest child to swap with
                 for child_index in children_indices:
@@ -73,7 +73,16 @@ class Heap:
                 children_indices = self.get_children_indices(current_index)
 
 
+    # def node_to_string(self, node_index, indent=0, ) -> str:
+    #     children_indices = self.get_children_indices(node_index)
+    #     internal = self._internal_tab
+    #     result = " " * indent + f"[{internal[node_index][0]}, {internal[node_index][1]}]\n"
+    #     for child_index in children_indices:
+    #         result += self.node_to_string(child_index, indent+4)
+    #     return result
 
 
-    def __str__(self) -> str:
-        pass
+    # def __str__(self) -> str:
+    #     if self._internal_tab:
+    #         return self.node_to_string(0)
+    #     return ""
