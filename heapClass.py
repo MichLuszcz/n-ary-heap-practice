@@ -68,11 +68,15 @@ class Heap:
                     if self._internal_tab[child_index] > largest:
                         largest_index = child_index
                         largest = self._internal_tab[child_index]
-                # swap with the largest child and update the position of the node
-                # and get the new children
-                self.swap_at_indices(current_index, largest_index)
-                current_index = largest_index
-                children_indices = self.get_children_indices(current_index)
+                # If the largest child is not bigger than parrent we do not swap them
+                if largest > self._internal_tab[current_index]:
+                    # swap with the largest child and update the position of the node
+                    # and get the new children
+                    self.swap_at_indices(current_index, largest_index)
+                    current_index = largest_index
+                    children_indices = self.get_children_indices(current_index)
+                else:
+                    return
 
 
 
