@@ -56,7 +56,8 @@ class Heap:
             parent_index = self.get_parent(current_index)
 
     def heapify(self) -> None:
-        # swap with larger child, until the child index exceeds the size of the array
+        # swap with largest child until the heap property is satisfied or until
+        # there are no more children
         if self._internal_tab:
             current_index = 0
             children_indices = self.get_children_indices(current_index)
@@ -67,10 +68,10 @@ class Heap:
                 for child_index in children_indices:
                     if self._internal_tab[child_index][0] > largest:
                         largest_index = child_index
-                        largest = self._internal_tab[child_index]
-                # If the largest child is not bigger than parrent we do not swap them
-                if largest > self._internal_tab[current_index]:
-                    # swap with the largest child and update the position of the node
+                        largest = self._internal_tab[child_index][0]
+                # If the largest child is not bigger than parent we do not swap them
+                if largest > self._internal_tab[current_index][0]:
+                    # swap with the largest child, update the position of the node
                     # and get the new children
                     self.swap_at_indices(current_index, largest_index)
                     current_index = largest_index
