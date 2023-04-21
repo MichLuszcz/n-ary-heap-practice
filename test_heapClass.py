@@ -149,16 +149,18 @@ def test_get_children_indicies_7():
 
 def test_pop_from_heap_7():
     my_heap = Heap(7)
-    my_heap.add(35)
-    my_heap.add(24)
-    my_heap.add(12)
-    my_heap.add(20)
-    my_heap.add(30)
-    my_heap.add(11)
-    my_heap.add(10)
-    my_heap.add(49)
-    my_heap.add(29)
-    my_heap.add(76)
-    my_heap.add(7)
+    my_heap.add(35, 35)
+    my_heap.add(24, 24)
+    my_heap.add(12,  12)
+    my_heap.add(20, 20)
+    my_heap.add(30,  30)
+    my_heap.add(11,   11)
+    my_heap.add(10,  10)
+    my_heap.add(49,  49)
+    my_heap.add(29, 29)
+    my_heap.add(76, 76)
+    my_heap.add(7, 7)
     my_heap.pop()
-    assert my_heap.get_internal_tab() == [49, 29, 12, 20, 30, 11, 10, 35, 24, 7]
+    assert my_heap.get_internal_tab() == [(49,  49), (29, 29), (12,  12),
+                                          (20, 20), (30,  30), (11,   11),
+                                          (10,  10), (35, 35), (24, 24), (7, 7)]
