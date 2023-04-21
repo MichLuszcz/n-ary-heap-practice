@@ -8,6 +8,8 @@ class Heap:
         self.arity = n
         self._internal_tab = []
 
+    def get_internal_tab(self):
+        return self._internal_tab
 
     def get_parent(self, self_index):
 
@@ -17,7 +19,7 @@ class Heap:
 
     def get_children_indices(self, parent_index):
         children_indices = []
-        for child_number in range(1, self.arity+1):
+        for child_number in range(1, self.arity + 1):
             child_index = self.arity * parent_index + child_number
             if child_index < len(self._internal_tab):
                 children_indices.append(child_index)
@@ -65,12 +67,16 @@ class Heap:
                 for child_index in children_indices:
                     if self._internal_tab[child_index][0] > largest:
                         largest_index = child_index
-                        largest = self._internal_tab[child_index][0]
-                # swap with the largest child and update the position of the node
-                # and get the new children
-                self.swap_at_indices(current_index, largest_index)
-                current_index = largest_index
-                children_indices = self.get_children_indices(current_index)
+                        largest = self._internal_tab[child_index]
+                # If the largest child is not bigger than parrent we do not swap them
+                if largest > self._internal_tab[current_index]:
+                    # swap with the largest child and update the position of the node
+                    # and get the new children
+                    self.swap_at_indices(current_index, largest_index)
+                    current_index = largest_index
+                    children_indices = self.get_children_indices(current_index)
+                else:
+                    return
 
 
     def node_to_string(self, node_index, indent=0, which_child = None) -> str:
