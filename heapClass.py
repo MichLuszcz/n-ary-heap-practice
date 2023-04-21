@@ -63,9 +63,9 @@ class Heap:
                 largest_index = children_indices[0]
                 # find the largest child to swap with
                 for child_index in children_indices:
-                    if self._internal_tab[child_index] > largest:
+                    if self._internal_tab[child_index][0] > largest:
                         largest_index = child_index
-                        largest = self._internal_tab[child_index]
+                        largest = self._internal_tab[child_index][0]
                 # swap with the largest child and update the position of the node
                 # and get the new children
                 self.swap_at_indices(current_index, largest_index)
@@ -73,12 +73,13 @@ class Heap:
                 children_indices = self.get_children_indices(current_index)
 
 
-    def node_to_string(self, node_index, indent=0, ) -> str:
+    def node_to_string(self, node_index, indent=0, which_child = None) -> str:
         children_indices = self.get_children_indices(node_index)
         internal = self._internal_tab
-        result = " " * indent + f"[{internal[node_index][0]}, {internal[node_index][1]}]\n"
-        for child_index in children_indices:
-            result += self.node_to_string(child_index, indent+4)
+        result = " " * indent + (f"{which_child}: " if which_child is not None else '')
+        result += f"[{internal[node_index][0]}, {internal[node_index][1]}]\n"
+        for child_number, child_index in enumerate(children_indices):
+            result += self.node_to_string(child_index, indent+4, child_number + 1)
         return result
 
 
