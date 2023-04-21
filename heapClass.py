@@ -8,6 +8,8 @@ class Heap:
         self.arity = n
         self._internal_tab = []
 
+    def get_internal_tab(self):
+        return self._internal_tab
 
     def get_parent(self, self_index):
 
@@ -17,10 +19,10 @@ class Heap:
 
     def get_children_indices(self, parent_index):
         children_indices = []
-        for child_number in range(self.arity):
+        for child_number in range(1, self.arity + 1):
             child_index = self.arity * parent_index + child_number
             if child_index < len(self._internal_tab):
-                children_indices.append()
+                children_indices.append(child_index)
         return children_indices
 
     def pop(self):
