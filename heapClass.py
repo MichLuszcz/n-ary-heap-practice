@@ -17,7 +17,7 @@ class Heap:
 
     def get_children_indices(self, parent_index):
         children_indices = []
-        for child_number in range(self.arity):
+        for child_number in range(1, self.arity+1):
             child_index = self.arity * parent_index + child_number
             if child_index < len(self._internal_tab):
                 children_indices.append(child_index)
@@ -73,16 +73,16 @@ class Heap:
                 children_indices = self.get_children_indices(current_index)
 
 
-    # def node_to_string(self, node_index, indent=0, ) -> str:
-    #     children_indices = self.get_children_indices(node_index)
-    #     internal = self._internal_tab
-    #     result = " " * indent + f"[{internal[node_index][0]}, {internal[node_index][1]}]\n"
-    #     for child_index in children_indices:
-    #         result += self.node_to_string(child_index, indent+4)
-    #     return result
+    def node_to_string(self, node_index, indent=0, ) -> str:
+        children_indices = self.get_children_indices(node_index)
+        internal = self._internal_tab
+        result = " " * indent + f"[{internal[node_index][0]}, {internal[node_index][1]}]\n"
+        for child_index in children_indices:
+            result += self.node_to_string(child_index, indent+4)
+        return result
 
 
-    # def __str__(self) -> str:
-    #     if self._internal_tab:
-    #         return self.node_to_string(0)
-    #     return ""
+    def __str__(self) -> str:
+        if self._internal_tab:
+            return self.node_to_string(0)
+        return ""
