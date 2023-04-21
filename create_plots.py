@@ -7,16 +7,16 @@ import random
 def create_heap(arity, collection_to_use:list):
     if arity == 2:
         my_heap = Heap(2)
-        for number in(collection_to_use):
-            my_heap.add(number)
+        for index, number in enumerate(collection_to_use):
+            my_heap.add(number, index)
     if arity == 5:
         my_heap = Heap(5)
-        for number in(collection_to_use):
-            my_heap.add(number)
+        for index, number in enumerate(collection_to_use):
+            my_heap.add(number, index)
     if arity == 7:
         my_heap = Heap(7)
-        for number in(collection_to_use):
-            my_heap.add(number)
+        for index, number in enumerate(collection_to_use):
+            my_heap.add(number, index)
     return my_heap
 
 
@@ -73,33 +73,25 @@ def create_heap_figures(entry_list:list):
                 time_to_create_7_arity.append(heap_times[0])
                 time_to_remove_7_arity.append(heap_times[1])
 
-    # 2 arity heap plot
-    plt.plot(n_tested[:11], time_to_create_2_arity, color = 'g', label = 'creation')
-    plt.plot(n_tested[:11], time_to_remove_2_arity, color = 'r', label = 'removing')
+    # creation plots
+    plt.plot(n_tested[:11], time_to_create_2_arity, color = 'g', label = "2 arity")
+    plt.plot(n_tested[11:22], time_to_create_5_arity, color = 'r', label = "5 arity")
+    plt.plot(n_tested[22:], time_to_create_7_arity, color = 'b', label = "7 arity")
     plt.xlabel("Number of elements")
     plt.ylabel("Time")
     plt.legend()
-    plt.savefig("2 Heap time")
+    plt.savefig("Heaps creation times")
     plt.clf()
 
-    # 5 arity heap plot
-    plt.plot(n_tested[11:22], time_to_create_5_arity, color = 'g', label = 'creation')
-    plt.plot(n_tested[11:22], time_to_remove_5_arity, color = 'r', label = 'removing')
+    # removing from plots
+    plt.plot(n_tested[:11], time_to_remove_2_arity, color = 'g', label = "2 arity")
+    plt.plot(n_tested[11:22], time_to_remove_5_arity, color = 'r', label = "5 arity")
+    plt.plot(n_tested[22:], time_to_remove_7_arity, color = 'b', label = "7 arity")
     plt.xlabel("Number of elements")
     plt.ylabel("Time")
     plt.legend()
-    plt.savefig("5 Heap time")
+    plt.savefig("Heaps removal times")
     plt.clf()
-
-    # 7 arity heap plot
-    plt.plot(n_tested[22:], time_to_create_7_arity, color = 'g', label = 'creation')
-    plt.plot(n_tested[22:], time_to_remove_7_arity, color = 'r', label = 'removing')
-    plt.xlabel("Number of elements")
-    plt.ylabel("Time")
-    plt.legend()
-    plt.savefig("7 Heap time")
-    plt.clf()
-
 
 
 if __name__ == "__main__":
