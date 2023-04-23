@@ -20,18 +20,17 @@ def create_heap(arity, collection_to_use:list):
     return my_heap
 
 
-def measure_removal_time(heap:Heap) -> list:
-    del_times = []
+def measure_removal_time(heap:Heap, n_of_pops:int) -> list:
     gc_old = gc.isenabled()
     gc.disable()
-    for _ in range(0, 100001, 10000):
-        start = time.process_time()
+    start = time.process_time()
+    for _ in range(n_of_pops + 1):
         heap.pop()
-        stop = time.process_time()
-        del_times.append(stop - start)
+    stop = time.process_time()
     if gc_old:
         gc.enable()
-    return del_times
+    removal_time = stop - start
+    return removal_time
 
 def measure_creation_time(arity, collection:list) -> int:
     if len(collection) == 0:
@@ -72,12 +71,24 @@ def create_heap_figures(entry_list:list):
             if c_arity == 7:
                 time_to_create_7_arity.append(heap_times)
 
-    my_heap = create_heap(2, entry_list)
-    time_to_remove_2_arity = measure_removal_time(my_heap)
-    my_heap = create_heap(5, entry_list)
-    time_to_remove_5_arity = measure_removal_time(my_heap)
-    my_heap = create_heap(7, entry_list)
-    time_to_remove_7_arity = measure_removal_time(my_heap)
+    for n in range(0, 100001, 10000):
+        if n == 0:
+            time_to_remove_2_arity.append(0)
+        else:
+            my_heap = create_heap(2, entry_list)
+            time_to_remove_2_arity.append(measure_removal_time(my_heap, n))
+    for n in range(0, 100001, 10000):
+        if n == 0:
+            time_to_remove_5_arity.append(0)
+        else:
+            my_heap = create_heap(5, entry_list)
+            time_to_remove_5_arity.append(measure_removal_time(my_heap, n))
+    for n in range(0, 100001, 10000):
+        if n == 0:
+            time_to_remove_7_arity.append(0)
+        else:
+            my_heap = create_heap(7, entry_list)
+            time_to_remove_7_arity.append(measure_removal_time(my_heap, n))
 
     # creation plots
     plt.plot(n_tested[:11], time_to_create_2_arity, color = 'g', label = "2 arity")
