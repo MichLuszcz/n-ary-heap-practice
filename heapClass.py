@@ -1,7 +1,6 @@
 import math
 
 
-
 class Heap:
 
     def __init__(self, n) -> None:
@@ -32,11 +31,10 @@ class Heap:
             self.swap_at_indices(0, last_index)
             # remember the value and delete the last (now max) node
             return_value = self._internal_tab.pop()
-            # heapify by pushing the root down until the heap property is satisfied
+            # heapify by pushing the root down until the heap property
+            # is satisfied
             self.heapify()
             return return_value
-
-
 
     def swap_at_indices(self, index_1, index_2):
         internal = self._internal_tab
@@ -62,7 +60,7 @@ class Heap:
             current_index = 0
             children_indices = self.get_children_indices(current_index)
             while children_indices:
-                largest = self._internal_tab[children_indices[0]][0] # the key of the first child
+                largest = self._internal_tab[children_indices[0]][0]  # the key of the first child
                 largest_index = children_indices[0]
                 # find the largest child to swap with
                 for child_index in children_indices:
@@ -79,8 +77,7 @@ class Heap:
                 else:
                     return
 
-
-    def node_to_string(self, node_index, indent=0, which_child = None) -> str:
+    def node_to_string(self, node_index, indent=0, which_child=None) -> str:
         children_indices = self.get_children_indices(node_index)
         internal = self._internal_tab
         result = " " * indent + (f"{which_child}: " if which_child is not None else '')
@@ -88,7 +85,6 @@ class Heap:
         for child_number, child_index in enumerate(children_indices):
             result += self.node_to_string(child_index, indent+4, child_number + 1)
         return result
-
 
     def __str__(self) -> str:
         if self._internal_tab:
