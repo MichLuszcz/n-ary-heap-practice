@@ -1,10 +1,9 @@
 from heapClass import Heap
 
-#priting out a nary heap
+# priting out a nary heap
 n = 5
 my_heap = Heap(n)
 
-# write instructions that look like this: "my_heap.add(x, x)", where x is a random integer between 1 and 150
 my_heap.add(90, 90)
 my_heap.add(133, 133)
 my_heap.add(45, 45)
